@@ -1,0 +1,26 @@
+{
+  "name": "030_bot",
+  "version": "0.0.1",
+  "devDependencies": {
+    "browser-sync": "2.18.13",
+    "gulp": "3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-image": "4.1.0",
+    "gulp-imagemin": "^4.0.0",
+    "gulp-plumber": "1.1.0",
+    "gulp-postcss": "7.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "3.1.0",
+    "gulp-uglify": "^3.0.0",
+    "npm-check-updates": "^2.8.6"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "start": "gulp serve"
+  },
+  "engines": {
+    "node": "^6.5.0"
+  }
+}

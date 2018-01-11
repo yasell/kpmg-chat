@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>KPMG</title>
+	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="js/app.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600">
+	<link rel="stylesheet" href="css/style.min.css">
+</head>
+
+<body>
+
+	<main class="page-wrapper">
+
+		<header class="header">
+			<div class="container">
+				<a href="/" class="header__logo">KPMG</a>
+			</div>
+		</header>
+
+		<div class="container">
+			<div class="response">
+				<div class="response__chat"></div>
+				<div class="response__request" style="display:none">
+					<p class="response__reply"> Look at a picture, please. </p>
+					<img id="info_image" name="info_image" src="assets/images/way.png" style="display:none">
+					<div id="info_table" class="response__table" style="display:none">
+						<table class="table">
+							<tbody>
+								<tr>
+									<td class="table__time">09:00 - 11:00</td>
+									<td>
+										<p class="table__title">KPMG Welcome</p>
+										<p class="table__content">Two days of learning from top product management and innovation executives.</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="table__time">11:15 - 13:30</td>
+									<td>
+										<p class="table__title">KPMG Welcome</p>
+										<p class="table__content">Two days of learning from top product management and innovation executives.</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="table__time">14:00 - 17:00</td>
+									<td>
+										<p class="table__title">KPMG Welcome</p>
+										<p class="table__content">Two days of learning from top product management and innovation executives.</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="table__time">17:15 - 19:30</td>
+									<td>
+										<p class="table__title">KPMG Welcome</p>
+										<p class="table__content">Two days of learning from top product management and innovation executives.</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="request">
+				<div class="request__wrapper">
+					<form action="" method="post">
+						<input id="input" class="request__input" type="text" name="name" value="" placeholder="Enter your question here...">
+						<button id="rec" class="request__rec" type="submit">Speak</button>
+					</form>
+				</div>
+				<div class="request__hero">
+					<script type="text/javascript" src="//vhss-d.oddcast.com/fb_embed_functions_v3.php?acc=6626974&js=1&h=440&w=251&bc=&fs=1&lo=1&ss=2597999&sl=0&tr=1&min=0&eid=06f7d80e61132a9864f69af949606818&fv=0"></script>
+				</div>
+			</div>
+			<textarea id="response" cols="40" rows="20" style="display:none;"></textarea>
+		</div>
+		</div>
+</body>
+
+</html>
