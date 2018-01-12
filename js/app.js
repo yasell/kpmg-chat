@@ -1,27 +1,43 @@
+//var host_server = 'http://localhost/bot/';
 var host_server = 'https://dizzain.us/030_bot/';
+//var host_server = 'https://medcatalog.by/bot/';
 var accessToken = "38c297a52fa24eee9128c6a3afcae076";
 var baseUrl = "https://api.api.ai/v1/";
+var answerText = '';
 
 $(document).ready(function() {
 	$("#input").keypress(function(event) {
 		if (event.which == 13) {
 			event.preventDefault();
 			send();
+			$(this).blur();
 		}
 	});
 	$("#rec").click(function(event) {
 		switchRecognition();
+
+		if ($(this).hasClass('request__rec--send')) {
+			event.preventDefault();
+			send();
+		}
 	});
-	$('#rec.request__rec--send').click(function(event) {
+	$("#replay").click(function(event) {
 		event.preventDefault();
-		send();
+		repeatText();
 	});
-	$("#input").focusin(function(e) {
-		$(this).siblings("#rec").addClass("request__rec--send");
+	$("#input").focusin(function() {
+		var sendBtn = $(this).siblings(".request__rec");
+		sendBtn.addClass("request__rec--send");
 	});
 	$("#input").focusout(function() {
-		$(this).siblings("#rec").removeClass("request__rec--send");
+		var sendBtn = $(this).siblings(".request__rec");
+		setTimeout(function() {
+			sendBtn.removeClass("request__rec--send");
+		}, 300);
 	});
+
+	var viewportHeight = $('.page-wrapper').outerHeight();
+	$('.page-wrapper').css('height', viewportHeight);
 });
 
 var recognition;
@@ -91,16 +107,18 @@ function send() {
 		success: function(data) {
 			setResponse(JSON.stringify(data, undefined, 2));
 			gotResponse(data);
-			$('.request__wrapper form').trigger('reset');
+			$("#input").val("");
 
 			if (chatWrapper.html().trim() === '') {
-				var chat = $('<p></p>').appendTo(chatWrapper);
+				var chat = $("<p></p>").appendTo(chatWrapper);
 				chat.append(text);
+				chatWrapper.css('display', 'block');
 			} else {
 				chatWrapper.empty();
 				setTimeout(function() {
-					var chat = $('<p></p>').appendTo(chatWrapper);
+					var chat = $("<p></p>").appendTo(chatWrapper);
 					chat.append(text);
+					chatWrapper.css('display', 'block');
 				}, 100);
 			}
 		},
@@ -109,35 +127,14 @@ function send() {
 		}
 	});
 	setResponse("Loading...");
+	$('#info_message').removeClass('response__reply--answer');
+	$('#info_message > p').remove();
+	$("#info_wrap, #info_wrap > *, .response__chat").css('display', 'none');
 }
 
 function setResponse(val) {
 	$("#response").text(val);
 }
-
-// function writeTable(array) {
-// 	var thead = $('#info_table thead');
-// 	var tbody = $('#info_table tbody');
-//
-// 	$('#info_image').css('display', 'none');
-// 	$('#info_table').css('display', 'block');
-//
-// 	thead.empty();
-// 	tbody.empty();
-//
-// 	var th = $('<tr></tr>').appendTo(thead);
-// 	for (var j = 0; j < array[0].length; j++) {
-// 		th.append('<td>' + array[0][j] + '</td>');
-// 	}
-//
-// 	for (var i = 1; i < array.length; i++) {
-// 		var tr = $('<tr></tr>').appendTo(tbody);
-//
-// 		for (var j = 0; j < array[0].length; j++) {
-// 			tr.append('<td>' + array[i][j] + '</td>');
-// 		}
-// 	}
-// }
 
 function gotResponse(data) {
 	switch (data['result']['action']) {
@@ -153,10 +150,8 @@ function gotResponse(data) {
 	}
 	$.each(data['result']['parameters'], function(key, value) {
 		if (key == 'image') {
-			$('#info_image').attr("src", host_server + 'assets/images/' + value);
-			$('#info_image').css('display', 'block');
-			$('.response__request').css('display', 'block');
-			$('#info_table').css('display', 'none');
+			showMessage('Look at this picture');
+			showImage(value);
 		}
 		if (key == 'table') {
 			//$('#info_image').attr("src", host_server + 'assets/images/' + value);
@@ -171,6 +166,9 @@ function gotResponse(data) {
 	});
 	if (data['result']['fulfillment']['speech'] != '') {
 		sayText(data['result']['fulfillment']['speech'], 3, 1, 3);
+		showMessage();
+		answerText = data['result']['fulfillment']['speech'];
+
 		//alert(data['result']['fulfillment']['speech']);
 	}
 }
@@ -189,25 +187,52 @@ function shuffle(a) {
 	}
 }
 
-// function writeTable(array) {
-// 	var
-// 		timeTd = ('#info_table .table__time'),
-// 		titleTd = $('#info_table .table__title'),
-// 		textTd = $('#info_table .table__content');
-//
-// 	var th = $('<p></p>').appendTo(timeTd);
-// 	for (var j = 1; j < array.length; j++) {
-// 		var data = array[j],
-// 			time = data.time,
-// 			title = data.title,
-// 			name = data.name;
-//
-// 		th.append(time);
-// 	}
-//
-// 	$('#info_image').css('display', 'none');
-// 	$('#info_table').css('display', 'block');
+function repeatText() {
+	sayText(answerText, 3, 1, 3);
+}
+
+function showMessage(text) {
+	var message = $("<p></p>").appendTo('#info_message');
+	message.append(text);
+	$("#info_wrap, #info_message").css('display', 'block');
+	$("#info_message").addClass('response__reply--answer').css('display', 'block');
+}
+
+// function showText(text) {
+// 	var message = $("<p></p>").appendTo('#info_message');
+// 	message.append(text);
+// 	$("#info_wrap, #info_message").css('display', 'block');
 // }
+
+function showImage(value) {
+	$("#info_wrap, #info_image").css('display', 'block');
+	$('#info_image').attr("src", host_server + 'assets/images/' + value);
+}
+
+function showTable(array) {
+	var
+		tableTime = $("#info_table .table__time"),
+		tableTitle = $("#info_table .table__title"),
+		tableText = $("#info_table .table__content");
+
+	for (var i = 0; i < array.length; i++) {
+		var data = array[i],
+			time = data.time,
+			title = data.title,
+			name = data.name;
+
+		var timeTd = $("<p></p>").appendTo(tableTime[i]),
+			titleTd = $("<p></p>").appendTo(tableTitle[i]),
+			textTd = $("<p></p>").appendTo(tableText[i]);
+
+		timeTd.append(time);
+		titleTd.append(title);
+		textTd.append(name);
+		console.log();
+	}
+
+	$("#info_wrap, #info_table").css('display', 'block');
+}
 
 var events = [{
 	'time': 'September 09, 2018 09:00',
@@ -216,15 +241,15 @@ var events = [{
 }, {
 	'time': 'September 19, 2018 09:30',
 	'title': 'Keynote: Business Advice',
-	'name': 'event'
+	'name': 'Two days of learning'
 }, {
 	'time': 'November 09, 2018 10:30',
 	'title': 'The transformation of business',
-	'name': 'event'
+	'name': 'Two days of learning from top product management'
 }, {
 	'time': 'November 09, 2018 11:00',
 	'title': 'The Economics of a Digital Labor Force',
-	'name': 'event'
+	'name': 'Two days of learning from top product management and innovation executives'
 }];
 
 var breaks = [{
