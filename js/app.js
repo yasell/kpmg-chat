@@ -4,6 +4,7 @@ var host_server = 'https://dizzain.us/030_bot/';
 var accessToken = "38c297a52fa24eee9128c6a3afcae076";
 var baseUrl = "https://api.api.ai/v1/";
 var answerText = '';
+var last_response = [];
 
 $(document).ready(function() {
 	$("#input").keypress(function(event) {
@@ -105,6 +106,7 @@ function send() {
 			sessionId: "somerandomthing"
 		}),
 		success: function(data) {
+			last_response = data;
 			setResponse(JSON.stringify(data, undefined, 2));
 			gotResponse(data);
 			$("#input").val("");
@@ -129,7 +131,7 @@ function send() {
 	setResponse("Loading...");
 	$('#info_message').removeClass('response__reply--answer');
 	$('#info_message > p').remove();
-	$("#info_wrap, #info_wrap > *, .response__chat").css('display', 'none');
+	$("#info_wrap, #info_wrap > *, .response__chat, #info_table, #info_message").css('display', 'none');
 }
 
 function setResponse(val) {
@@ -150,9 +152,14 @@ function gotResponse(data) {
 	}
 	$.each(data['result']['parameters'], function(key, value) {
 		if (key == 'image') {
-			showMessage('Look at this picture');
+			//showMessage('Look at this picture');
 			showImage(value);
 		}
+
+		if (key == 'use_func') {
+			window[value](data['result']['parameters']);
+		}
+
 		if (key == 'table') {
 			//$('#info_image').attr("src", host_server + 'assets/images/' + value);
 			//$('#info_table').css('display', 'none');
@@ -164,13 +171,44 @@ function gotResponse(data) {
 			}
 		}
 	});
-	if (data['result']['fulfillment']['speech'] != '') {
-		sayText(data['result']['fulfillment']['speech'], 3, 1, 3);
-		showMessage();
-		answerText = data['result']['fulfillment']['speech'];
+	if (last_response['result']['fulfillment']['speech'] != '') {
+		answerText = last_response['result']['fulfillment']['speech'];
+		sayText(answerText, 3, 1, 3);
+		showMessage(answerText);
+
 
 		//alert(data['result']['fulfillment']['speech']);
 	}
+}
+
+function getPlanetByName(params) {
+	showImage('reception_' + params['planets'].toLowerCase() + '.png');
+}
+
+function getUserByName(params) {
+	//showImage('reception_' + params['planets'].toLowerCase() + '.png');
+	//SPEAKER_NAME  is currently in room ROOM_NAME. Here's how you can find him
+	last_response['result']['fulfillment']['speech'] = last_response['result']['fulfillment']['speech'].replace("SPEAKER_NAME", params['speaker']);
+	tmp_events = [];
+	for (var i = 0; i < events.length; i++) {
+		if (events[i]['speaker'] == params['speaker']) {
+			tmp_events[tmp_events.length] = events[i];
+		}
+	}
+	if (tmp_events.length) {
+		last_response['result']['fulfillment']['speech'] = last_response['result']['fulfillment']['speech'].replace("ROOM_NAME", tmp_events[0]['room']);
+		showImage('reception_' + tmp_events[0]['room'].toLowerCase() + '.png');
+		showTable(tmp_events);
+	} else {
+		last_response['result']['fulfillment']['speech'] = 'Sorry. I can\'t find him';
+	}
+	/*
+	 'time': 'September 09, 2018 09:00',
+	 'title': 'KPMG Welcome',
+	 'name': 'event',
+	 'speaker': 'Alex Krasner',
+	 'room': 'Mars',
+	**/
 }
 
 function show_current_location(data) {
@@ -194,7 +232,7 @@ function repeatText() {
 function showMessage(text) {
 	var message = $("<p></p>").appendTo('#info_message');
 	message.append(text);
-	$("#info_wrap, #info_message").css('display', 'block');
+	// $("#info_wrap").css('display', 'block');
 	$("#info_message").addClass('response__reply--answer').css('display', 'block');
 }
 
@@ -215,83 +253,85 @@ function showTable(array) {
 		tableTitle = $("#info_table .table__title"),
 		tableText = $("#info_table .table__content");
 
+	tableTime.empty();
+	tableTitle.empty();
+	tableText.empty();
+
 	for (var i = 0; i < array.length; i++) {
 		var data = array[i],
 			time = data.time,
 			title = data.title,
 			name = data.name;
+			room = data.room;
 
 		var timeTd = $("<p></p>").appendTo(tableTime[i]),
 			titleTd = $("<p></p>").appendTo(tableTitle[i]),
 			textTd = $("<p></p>").appendTo(tableText[i]);
+			// roomTd = $("<p></p>").appendTo(tableTime[i]);
 
 		timeTd.append(time);
 		titleTd.append(title);
 		textTd.append(name);
-		console.log();
+		// roomTd.append(room);
 	}
 
-	$("#info_wrap, #info_table").css('display', 'block');
+	$("#info_table").css('display', 'block');
 }
 
 var events = [{
-	'time': 'September 09, 2018 09:00',
-	'title': 'KPMG Welcome',
-	'name': 'event'
+    'time': '09:00 - 11:00',
+    'title': 'Managing consumer relationships',
+    'name': 'The increase in priority attached to provenance branding, co-innovation with customers, embedding resources (including people) into export markets and developing a New Zealand integrity mark highlight the focus being placed on managing consumer relationships',
+    'speaker': 'Alex Krasner',
+    'room': 'Mars',
 }, {
-	'time': 'September 19, 2018 09:30',
-	'title': 'Keynote: Business Advice',
-	'name': 'Two days of learning'
+    'time': '09:30 - 12:15',
+    'title': 'High quality trade agreements',
+    'name': ' Leaders placed greater priority on securing high quality trade agreements, reflecting the shift in the trade environment as a result of Brexit and the election of President Trump. Industry leaders suggest free trade as we know it will only survive if everybody benefits, we must seek to combat social inequality and better disperse the benefits of trade to retain market access into the future',
+    'speaker': 'Bill Smith',
+    'room': 'Mercury',
 }, {
-	'time': 'November 09, 2018 10:30',
-	'title': 'The transformation of business',
-	'name': 'Two days of learning from top product management'
+    'time': '10:30 - 11:00',
+    'title': 'Biotechnologies',
+    'name': 'The conversation around biotechnologies has evolved, it is no longer about whether these technologies will be adopted given the benefits they can deliver, but about the regulatory framework that is needed to manage their application.',
+    'speaker': 'Alex Krasner',
+    'room': 'Mercury',
 }, {
-	'time': 'November 09, 2018 11:00',
-	'title': 'The Economics of a Digital Labor Force',
-	'name': 'Two days of learning from top product management and innovation executives'
+    'time': '11:00 - 14:10',
+    'title': 'Leveraging data',
+    'name': 'Concerns were expressed around how the sector is leveraging data that is being collected, with some leaders suggesting we are moving backwards comparatively to other countries. Companies are keeping close control over their data and seeking opportunities to monetise it, however without collaboration it is unlikely any significant financial benefits will crystallise.',
+    'speaker': 'John Snow',
+    'room': 'Uranus',
 }];
 
 var breaks = [{
-		'time': 'November 09, 2018 10:15',
-		'title': 'Break',
-		'name': 'break'
-	},
-	{
-		'time': 'November 09, 2018 12:15',
-		'title': 'Break',
-		'name': 'break'
-	},
-	{
-		'time': 'November 09, 2018 14:15',
-		'title': 'Break',
-		'name': 'break'
-	},
-	{
-		'time': '',
-		'title': 'No more events or breaks are available for today',
-		'name': 'break'
-	}
+    'time_from': '10:15',
+    'time_to': '11:15',
+},
+    {
+        'time_from': '12:15',
+        'time_to': '13:15',
+    },
+    {
+        'time_from': '14:15',
+        'time_to': '15:15',
+    }
 
 ];
 
 function getNextBreak() {
-	shuffle(breaks);
+    shuffle(breaks);
 
-	writeTable([
-		['Next Break'],
-		[breaks[0]['time'] + ' ' + breaks[0]['title']]
-	]);
-	sayText(breaks[0]['time'] + ' ' + breaks[0]['title'], 3, 1, 3);
-	//return breaks[0]['time'] + ' ' + breaks[0]['title'];
+    //showTable(breaks[0]);
+    sayText(breaks[0]['time'] + ' ' + breaks[0]['title'], 3, 1, 3);
+    showMessage('The next break is planned to be from ' + breaks[0]['time_from'] + ' till ' + breaks[0]['time_to']);
+    //return breaks[0]['time'] + ' ' + breaks[0]['title'];
 }
 
 function getNextEvent() {
-	shuffle(events);
-	writeTable([
-		['Room', 'Time'],
-		['Mars', events[0]['time'] + ' ' + events[0]['title']]
-	]);
-	sayText(events[0]['time'] + ' ' + events[0]['title'], 3, 1, 3);
-	//return events[0]['time'] + ' ' + events[0]['title'];
+    shuffle(events);
+    showTable(events);
+    showMessage('Here\'s is the schedule for Mars');
+    sayText('Here\'s is the schedule for Mars', 3, 1, 3);
+    //return events[0]['time'] + ' ' + events[0]['title'];
 }

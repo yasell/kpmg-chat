@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="js/app.js"></script>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600">
 	<link rel="stylesheet" href="css/style.min.css">
 </head>
 
@@ -28,45 +28,47 @@
 				<div class="response__chat" style="display:none"></div>
 
 				<!-- Bot chat -->
+				<div id="info_message" class="response__reply" style="display:none">
+					<button id="replay" class="response__replay--btn">Replay</button>
+				</div>
+
 				<div id="info_wrap" class="response__request" style="display:none">
-					<div id="info_message" class="response__reply">
-						<button id="replay" class="response__replay--btn">Replay</button>
-					</div>
 					<img id="info_image" name="info_image" src="assets/images/placeholder.svg">
-					<div id="info_table" class="response__table">
-						<table class="table">
-							<tbody>
-								<tr>
-									<td class="table__time"></td>
-									<td>
-										<div class="table__title"></div>
-										<div class="table__content"></div>
-									</td>
-								</tr>
-								<tr>
-									<td class="table__time"></td>
-									<td>
-										<div class="table__title"></div>
-										<div class="table__content"></div>
-									</td>
-								</tr>
-								<tr>
-									<td class="table__time"></td>
-									<td>
-										<div class="table__title"></div>
-										<div class="table__content"></div>
-									</td>
-								</tr>
-								<tr>
-									<td class="table__time"></td>
-									<td>
-										<div class="table__title"></div>
-										<div class="table__content"></div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+				</div>
+
+				<div id="info_table" class="response__table" style="display:none">
+					<table class="table">
+						<tbody>
+							<tr>
+								<td class="table__time"></td>
+								<td>
+									<div class="table__title"></div>
+									<div class="table__content"></div>
+								</td>
+							</tr>
+							<tr>
+								<td class="table__time"></td>
+								<td>
+									<div class="table__title"></div>
+									<div class="table__content"></div>
+								</td>
+							</tr>
+							<tr>
+								<td class="table__time"></td>
+								<td>
+									<div class="table__title"></div>
+									<div class="table__content"></div>
+								</td>
+							</tr>
+							<tr>
+								<td class="table__time"></td>
+								<td>
+									<div class="table__title"></div>
+									<div class="table__content"></div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 			<div class="request">
