@@ -304,6 +304,26 @@ var events = [{
     'room': 'Uranus',
 }];
 
+function writeTable(array) {
+	var
+		timeTd = ('#info_table .table__time'),
+		titleTd = $('#info_table .table__title'),
+		textTd = $('#info_table .table__content');
+
+	// var th = $('<p></p>').appendTo(timeTd,titleTd,textTd);
+	for (var i = 0; i < array.length; i++) {
+		var data = array[i],
+			time = data.time,
+			title = data.title,
+			name = data.name;
+
+		// th.append(time);
+	}
+
+	$('#info_image').css('display', 'none');
+	$('#info_table').css('display', 'block');
+}
+
 var breaks = [{
     'time_from': '10:15',
     'time_to': '11:15',

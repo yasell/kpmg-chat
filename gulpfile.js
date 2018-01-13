@@ -40,26 +40,22 @@ gulp.task('style', function () {
 });
 
 // common js task
-// gulp.task('script', function () {
-// 	return gulp.src([
-// 			'js/snowstorm-min.js',
-// 			'js/jquery.2.1.4.js',
-// 			'js/simpleLightbox.js',
-// 			'js/mail.js',
-// 			'js/main.js'
-// 		])
-// 		.pipe(concat('script.js'))
-// 		.pipe(gulp.dest('js/'))
-// 		.pipe(rename('script.min.js'))
-// 		.pipe(uglify())
-// 		.pipe(gulp.dest('dist/'))
-// 		.pipe(server.reload({
-// 			stream: true
-// 		}));
-// });
+gulp.task('script', function () {
+	return gulp.src([
+			'js/app.js'
+		])
+		.pipe(concat('script.js'))
+		.pipe(gulp.dest('js/'))
+		// .pipe(rename('app.min.js'))
+		// .pipe(uglify())
+		// .pipe(gulp.dest('js/'))
+		.pipe(server.reload({
+			stream: true
+		}));
+});
 
 // server
-gulp.task('serve', ['style'], function () {
+gulp.task('serve', ['style', 'script'], function () {
 	server.init({
 		server: '.',
 		notify: false,
@@ -68,7 +64,7 @@ gulp.task('serve', ['style'], function () {
 	});
 
 	gulp.watch('assets/sass/**/*.{scss,sass}', ['style']);
-	// gulp.watch('js/*.js', ['script']);
+	gulp.watch('js/*.js', ['script']);
 	gulp.watch('*.html').on('change', server.reload);
 });
 
