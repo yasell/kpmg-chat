@@ -1,12 +1,14 @@
 //var host_server = 'http://localhost/bot/';
 var host_server = 'https://dizzain.us/030_bot/';
 //var host_server = 'https://medcatalog.by/bot/';
-var accessToken = "38c297a52fa24eee9128c6a3afcae076";
+//var accessToken = "38c297a52fa24eee9128c6a3afcae076";
+var accessToken = "6ef7fb1acb5f4e579bcf5e1208622c6a";
 var baseUrl = "https://api.api.ai/v1/";
 var answerText = '';
 var last_response = [];
 
 $(document).ready(function() {
+
 	$("#input").keypress(function(event) {
 		if (event.which == 13) {
 			event.preventDefault();
@@ -14,6 +16,19 @@ $(document).ready(function() {
 			$(this).blur();
 		}
 	});
+
+	$("#input").focusin(function() {
+		var sendBtn = $(this).siblings(".request__rec");
+		sendBtn.addClass("request__rec--send");
+	});
+
+	$("#input").focusout(function() {
+		var sendBtn = $(this).siblings(".request__rec");
+		setTimeout(function() {
+			sendBtn.removeClass("request__rec--send");
+		}, 300);
+	});
+
 	$("#rec").click(function(event) {
 		switchRecognition();
 
@@ -22,19 +37,16 @@ $(document).ready(function() {
 			send();
 		}
 	});
+
 	$("#replay").click(function(event) {
 		event.preventDefault();
 		repeatText();
 	});
-	$("#input").focusin(function() {
-		var sendBtn = $(this).siblings(".request__rec");
-		sendBtn.addClass("request__rec--send");
-	});
-	$("#input").focusout(function() {
-		var sendBtn = $(this).siblings(".request__rec");
-		setTimeout(function() {
-			sendBtn.removeClass("request__rec--send");
-		}, 300);
+
+	$("#info_promo button").click(function() {
+		question = $(this).data("question");
+
+		$("#input").val(question);
 	});
 
 	var viewportHeight = $('.page-wrapper').outerHeight();
@@ -128,10 +140,11 @@ function send() {
 			setResponse("Internal Server Error");
 		}
 	});
+
 	setResponse("Loading...");
 	$('#info_message').removeClass('response__reply--answer');
-	$('#info_message > p').remove();
-	$("#info_wrap, #info_wrap > *, .response__chat, #info_table, #info_message").css('display', 'none');
+	$('#info_message > div, #info_message > p').remove();
+	$("#info_wrap, #info_wrap > *, #info_promo, #info_chat, #info_table, #info_message").css('display', 'none');
 }
 
 function setResponse(val) {
@@ -181,8 +194,8 @@ function gotResponse(data) {
 	}
 }
 
-function getPlanetByName(params) {
-	showImage('reception_' + params['planets'].toLowerCase() + '.png');
+function getOfficeByName(params) {
+	showImage('reception_' + params['rooms'].toLowerCase() + '.png');
 }
 
 function getUserByName(params) {
@@ -303,26 +316,6 @@ var events = [{
     'speaker': 'John Snow',
     'room': 'Uranus',
 }];
-
-function writeTable(array) {
-	var
-		timeTd = ('#info_table .table__time'),
-		titleTd = $('#info_table .table__title'),
-		textTd = $('#info_table .table__content');
-
-	// var th = $('<p></p>').appendTo(timeTd,titleTd,textTd);
-	for (var i = 0; i < array.length; i++) {
-		var data = array[i],
-			time = data.time,
-			title = data.title,
-			name = data.name;
-
-		// th.append(time);
-	}
-
-	$('#info_image').css('display', 'none');
-	$('#info_table').css('display', 'block');
-}
 
 var breaks = [{
     'time_from': '10:15',

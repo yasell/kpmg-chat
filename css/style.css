@@ -183,6 +183,7 @@ body {
     position: absolute;
     z-index: -1; }
   .request__rec:active, .request__rec:focus, .request__rec:hover {
+    background-color: #1560de;
     text-decoration: none;
     outline: 0; }
     .request__rec:active:before, .request__rec:focus:before, .request__rec:hover:before {
@@ -224,22 +225,22 @@ body {
 .response__reply {
   margin: 20px auto; }
 
+.response__reply,
 .response__request,
-.response__table,
-.response__reply {
+.response__table {
   float: right;
   width: 100%;
   max-width: 650px;
   padding: 20px;
   background-color: #f0f4f7;
   border-radius: 4px; }
+  .response__reply img,
   .response__request img,
-  .response__table img,
-  .response__reply img {
+  .response__table img {
     max-width: 100%; }
+  .response__reply p,
   .response__request p,
-  .response__table p,
-  .response__reply p {
+  .response__table p {
     margin-bottom: 15px; }
 
 .response__reply {
@@ -286,6 +287,67 @@ body {
     outline: 0; }
     .response__replay--btn:active:before, .response__replay--btn:focus:before, .response__replay--btn:hover:before {
       left: 0; }
+
+.response__promo {
+  width: 100%;
+  float: right; }
+  .response__promo ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    width: 100%; }
+    .response__promo ul li {
+      display: inline-block;
+      width: 49%;
+      margin-right: 2%;
+      margin-bottom: 2%; }
+      .response__promo ul li:nth-child(even) {
+        margin-right: 0; }
+  .response__promo button {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+    padding: 20px 5px;
+    border: 0;
+    border-radius: 6px;
+    font: 16px "Open Sans", "Arial", sans-serif;
+    color: #fff;
+    background-color: #3a7cec;
+    cursor: pointer;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    -webkit-appearance: button;
+    overflow: hidden;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out; }
+    .response__promo button:active, .response__promo button:hover {
+      text-decoration: none;
+      outline: 0;
+      background-color: #1560de; }
+  .response__promo p {
+    display: block;
+    margin: 20px auto;
+    float: right;
+    width: auto;
+    max-width: 650px;
+    padding: 20px;
+    background-color: #f0f4f7;
+    border-radius: 4px; }
+    .response__promo p:after {
+      content: "";
+      display: table;
+      line-height: 0;
+      clear: both; }
 
 .response__table {
   max-width: 650px;

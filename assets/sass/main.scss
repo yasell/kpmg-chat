@@ -52,8 +52,8 @@ body {
 	margin: 0 auto;
 	padding: 0 2%;
 }
-// header
 
+// header
 .header {
 	z-index: 999;
 	position: fixed;
@@ -72,8 +72,8 @@ body {
 	font-size: 0;
 	text-decoration: none;
 }
-// request part
 
+// request part
 .request {
 	position: relative;
 	display: flex;
@@ -149,6 +149,7 @@ body {
 	&:active,
 	&:focus,
 	&:hover {
+		background-color: darken($blue, 10%);
 		text-decoration: none;
 		outline: 0;
 
@@ -169,8 +170,8 @@ body {
 	width: 20%;
 	height: auto;
 }
-// response part
 
+// response part
 .response {
 	max-width: 100%;
 	padding: 45px 20% 45px 0;
@@ -203,9 +204,9 @@ body {
 	margin: 20px auto;
 }
 
+.response__reply,
 .response__request,
-.response__table,
-.response__reply {
+.response__table {
 	float: right;
 	width: 100%;
 	max-width: 650px;
@@ -276,6 +277,76 @@ body {
 
 		&:before {
 			left: 0;
+		}
+	}
+}
+
+.response__promo {
+	width: 100%;
+	float: right;
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+
+		li {
+			display: inline-block;
+			width: 49%;
+			margin-right: 2%;
+			margin-bottom: 2%;
+
+			&:nth-child(even) {
+				margin-right: 0;
+			}
+		}
+	}
+
+	button {
+		position: relative;
+		display: inline-block;
+		width: 100%;
+		margin: 0;
+		padding: 20px 5px;
+		border: 0;
+		border-radius: 6px;
+		font: 16px $font;
+		color: #fff;
+		background-color: $blue;
+		cursor: pointer;
+		vertical-align: middle;
+		text-align: center;
+		white-space: nowrap;
+		text-decoration: none;
+		box-shadow: none;
+		touch-action: manipulation;
+		-webkit-appearance: button;
+		overflow: hidden;
+		transition: all 0.3s ease-in-out;
+
+		&:active,
+		&:hover {
+			text-decoration: none;
+			outline: 0;
+			background-color: darken($blue, 10%);
+		}
+	}
+
+	p {
+		display: block;
+		margin: 20px auto;
+    float: right;
+    width: auto;
+    max-width: 650px;
+    padding: 20px;
+    background-color: $blue_lightest;
+    border-radius: 4px;
+
+		&:after {
+			content: "";
+	    display: table;
+	    line-height: 0;
+	    clear: both;
 		}
 	}
 }
