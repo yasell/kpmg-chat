@@ -171,6 +171,64 @@ body {
 	height: auto;
 }
 
+.tips {
+	position: relative;
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+
+		li {
+			display: inline-block;
+			width: 49%;
+			margin-right: 2%;
+			margin-bottom: 12px;
+
+			&:nth-child(even) {
+				margin-right: 0;
+			}
+		}
+	}
+
+	button {
+		position: relative;
+		display: inline-block;
+		width: 100%;
+		margin: 0;
+		padding: 20px 5px;
+		border: 0;
+		border-radius: 6px;
+		font: 16px $font;
+		color: #fff;
+		background-color: $blue;
+		cursor: pointer;
+		vertical-align: middle;
+		text-align: center;
+		white-space: nowrap;
+		text-decoration: none;
+		box-shadow: none;
+		touch-action: manipulation;
+		-webkit-appearance: button;
+		overflow: hidden;
+		transition: all 0.3s ease-in-out;
+
+		&:active,
+		&:hover {
+			text-decoration: none;
+			outline: 0;
+			background-color: darken($blue, 10%);
+		}
+
+		&:disabled,
+		&[disabled] {
+			cursor: not-allowed;
+			pointer-events:none;
+			opacity: .6;
+		}
+	}
+}
+
 // response part
 .response {
 	max-width: 100%;
@@ -201,7 +259,7 @@ body {
 }
 
 .response__reply {
-	margin: 20px auto;
+	margin: 0 auto 20px auto;
 }
 
 .response__reply,
@@ -226,6 +284,7 @@ body {
 
 .response__reply {
 	position: relative;
+	padding-left: 65px;
 
 	&.response__reply--answer {
 		p {
@@ -284,53 +343,6 @@ body {
 .response__promo {
 	width: 100%;
 	float: right;
-
-	ul {
-		display: flex;
-		flex-wrap: wrap;
-		width: 100%;
-
-		li {
-			display: inline-block;
-			width: 49%;
-			margin-right: 2%;
-			margin-bottom: 2%;
-
-			&:nth-child(even) {
-				margin-right: 0;
-			}
-		}
-	}
-
-	button {
-		position: relative;
-		display: inline-block;
-		width: 100%;
-		margin: 0;
-		padding: 20px 5px;
-		border: 0;
-		border-radius: 6px;
-		font: 16px $font;
-		color: #fff;
-		background-color: $blue;
-		cursor: pointer;
-		vertical-align: middle;
-		text-align: center;
-		white-space: nowrap;
-		text-decoration: none;
-		box-shadow: none;
-		touch-action: manipulation;
-		-webkit-appearance: button;
-		overflow: hidden;
-		transition: all 0.3s ease-in-out;
-
-		&:active,
-		&:hover {
-			text-decoration: none;
-			outline: 0;
-			background-color: darken($blue, 10%);
-		}
-	}
 
 	p {
 		display: block;
