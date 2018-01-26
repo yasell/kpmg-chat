@@ -8,7 +8,7 @@ var last_response = [];
 var call_event = '';
 var tips = [
   ['text', 0],
-  ['text1', 1, showText]
+  ['text1', 1]
 ];
 
 $(document).ready(function() {
@@ -51,7 +51,6 @@ $(document).ready(function() {
     question = $(this).data('question');
 
     $('#input').val(question);
-    send();
   });
 
   var viewportHeight = $('.page-wrapper').outerHeight();
@@ -153,7 +152,6 @@ function send() {
 
   setResponse("Loading...");
   $('.response__reply').remove();
-  $('.tips ul > li').empty();
   $("#info_wrap, #info_wrap > *, #info_promo, #info_chat, #info_table").css('display', 'none');
 }
 
@@ -261,39 +259,23 @@ function showTips(arr) {
   var list = $('.tips ul'),
     item = $('.tips ul > li');
 
+  list.empty();
   item.empty();
 
   for (var i = 0; i < arr.length; i++) {
     var name = arr[i][0],
       disabled = arr[i][1],
-      arrFunc = arr[i][2],
+      listItem = $('<li></li>').appendTo(list),
       button = $('<button></button>').appendTo(item[i]);
 
-    button.append(name);
-    button.attr('data-question', name);
-    button.attr('disabled', disabled==0);
-
-    $('.tips button').click(function() {
-      if (arrFunc !== undefined) {
-        arrFunc();
-        question = $(this).data('question');
-        $('#input').val(question);
-        send();
-      } else {
-        question = $(this).data('question');
-        $('#input').val(question);
-        send();
-      }
-    });
+    // button.append(name);
+    // button.attr('data-question', name);
+    // button.attr('disabled', disabled==0);
   }
-}
 
-function showText() {
-  alert('Hi!');
-
-	// var message = $("<p></p>").appendTo('#info_message');
-	// message.append(text);
-	// $("#info_wrap, #info_message").css('display', 'block');
+  $('.tips button').click(function() {
+    $('#input').val($(this).data('question'));
+  });
 }
 
 function showMessage(text) {
@@ -306,6 +288,12 @@ function showMessage(text) {
 
   messageWrapper.append(text).insertBefore(tips);
 }
+
+// function showText(text) {
+// 	var message = $("<p></p>").appendTo('#info_message');
+// 	message.append(text);
+// 	$("#info_wrap, #info_message").css('display', 'block');
+// }
 
 function showImage(value) {
   $("#info_wrap, #info_image").css('display', 'block');
